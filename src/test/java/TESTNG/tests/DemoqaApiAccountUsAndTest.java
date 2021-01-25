@@ -3,6 +3,7 @@ package TESTNG.tests;
 import TESTNG.pojos.DemoqaAuthorizedPojo;
 import TESTNG.utilities.ExcelUtilX;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -46,13 +47,22 @@ public class DemoqaApiAccountUsAndTest {
     }
     @Test
     public void TC0102(){
-        getAutorizedResponse(123456,"JQ3iPpTEKTLjSQJ!").prettyPrint();
-        System.out.println();
+        String result = getAutorizedResponse(123456,"JQ3iPpTEKTLjSQJ!").prettyPrint();
+        Assert.assertFalse(result.equals(false));
     }
     @Test
     public void TC0103(){
-        getAutorizedResponse(123456,"").prettyPrint();
-        System.out.println();
+        getAutorizedResponse(123456,"Abcd");
+        JsonPath jsonPath = response.jsonPath();
+        Assert.assertEquals(jsonPath.getString("message"),"User not found!");
+        Assert.assertEquals(response.getStatusCode(),404);
+    }
+    @Test
+    public void TC0104(){
+        getAutorizedResponse(123456,"");
+        JsonPath jsonPath = response.jsonPath();
+        Assert.assertEquals(jsonPath.getString("message"),"UserName and Password required.");
+        Assert.assertEquals(response.getStatusCode(),400);
     }
 
 
