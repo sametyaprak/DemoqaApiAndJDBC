@@ -64,7 +64,7 @@ public class DemoqaApiAccount {
     public void postGenerateToken() throws IOException, InvalidFormatException {
         DemoqaAuthorizedPojo demoqaAuthorizedPojo =
                 new DemoqaAuthorizedPojo(   excelUtilX.getCellData(1,0),
-                                            "excelUtilX.getCellData(1,1)");
+                                            excelUtilX.getCellData(1,1));
         response = given().
                     contentType(ContentType.JSON).
                     auth().
